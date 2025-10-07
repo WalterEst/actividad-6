@@ -1,35 +1,41 @@
 <script setup>
-import { ref } from 'vue'
-// Componentes principales
-import Proveedores from './components/Proveedores.vue'
-import Libros from './components/Libros.vue'
-import Recepciones from './components/Recepciones.vue'
+import { computed } from 'vue'
+import { RouterView } from 'vue-router'
+import AppNavbar from './components/AppNavbar.vue'
 
-// Se usa un ref para recordar la pestaña activa sin recurrir a un sistema de ruteo completo
-const tab = ref('recepciones')
+const currentYear = computed(() => new Date().getFullYear())
 </script>
 
 <template>
-  <div class="container">
-    <h1>Recepción de Textos Escolares</h1>
-
-    <div class="hstack">
-      <!-- Botones que actúan como pestañas, simplificando la navegación -->
-      <button :class="{active:tab==='recepciones'}" @click="tab='recepciones'">Recepciones</button>
-      <button :class="{active:tab==='libros'}" @click="tab='libros'">Libros</button>
-      <button :class="{active:tab==='proveedores'}" @click="tab='proveedores'">Proveedores</button>
-    </div>
-
-    <!-- Renderizado condicional para evitar cargar componentes innecesarios -->
-    <Recepciones v-if="tab==='recepciones'" />
-    <Libros v-if="tab==='libros'" />
-    <Proveedores v-if="tab==='proveedores'" />
+  <div class="layout">
+    <AppNavbar />
+    <main>
+      <RouterView />
+    </main>
+    <footer>
+      <p>© {{ currentYear }} Municipalidad de Chillán. Turismo y cultura para todos.</p>
+    </footer>
   </div>
 </template>
 
 <style scoped>
-/* Estilos locales para evitar efectos en otros componentes */
-.container{max-width:1024px;margin:24px auto;padding:16px;font-family:system-ui}
-.hstack{display:flex;gap:8px;margin:12px 0}
-button.active{outline:2px solid #2563eb}
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  padding: 3rem min(6vw, 4rem);
+  background: linear-gradient(180deg, rgba(244, 211, 94, 0.15), rgba(11, 83, 148, 0.05));
+}
+
+footer {
+  background: #10375c;
+  color: #fff;
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.9rem;
+}
 </style>
